@@ -17,6 +17,7 @@
 			WHERE
 				DEL_GB = 'N'
 		]]>
+		<include refid="search"></include>
 		<include refid="common.pagingPost"/> 
 	</select>
 	
@@ -33,6 +34,22 @@
 			WHERE
 				DEL_GB = 'N'
 		]]>
+	</select>
+	
+	<select id="selectSearchBoardList" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				ROW_NUMBER() OVER (ORDER BY IDX DESC) RNUM,
+			    IDX,
+			    TITLE,
+			    HIT_CNT,
+			    CREA_DTM
+			FROM
+			    TB_BOARD
+			WHERE
+				DEL_GB = 'N'
+		]]>
+		<include refid="search"/> 
 	</select>
 	
 	<insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
@@ -175,4 +192,13 @@
 				IDX = #{FILE_IDX}	
 		]]>
 	</update>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">AND TITLE LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()">AND CONTENTS LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">AND CREA_ID LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()">AND (TITLE LIKE '%' || #{keyword} || '%') or (CONTENTS LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
 </mapper>

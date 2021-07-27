@@ -38,8 +38,7 @@ public class CommonServiceImpl implements CommonService{
 	
 	@Resource(name="sampleDAO")
 	private SampleDAO sampleDAO;
-	
-	
+
 
 	@Override
 	public Map<String, Object> selectFileInfo(Map<String, Object> map) throws Exception {

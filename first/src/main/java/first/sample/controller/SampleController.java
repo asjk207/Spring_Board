@@ -1,5 +1,6 @@
 package first.sample.controller;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -24,22 +25,48 @@ public class SampleController {
 	private SampleService sampleService;
 
 	// 최초 실행시 sample/openBoardList.do주소로 연동되어 아래의 메소드가 실행된다.
+	// ModelAndView는 
 	@RequestMapping(value = "/sample/openBoardList.do")
 	public ModelAndView openBoardList(CommandMap commandMap) throws Exception {
 		// 메서드 실행시 boardList.jsp파일이 실행된다.
 		ModelAndView mv = new ModelAndView("/sample/boardList");
 		log.debug("openBoardList_Map 확인"+commandMap.getMap());
 		
+		
 		// 목록을 저장할수 있는 List를 선언 한다.
 		// 글번호, 글제목, 작성일 등의 내용을 Map에 저장하려는 것이다.
 		// Map은 다시 키(key)와 값(value)로 구분되어지는데, 각각의 컬럼인 글번호, 글제목, 작성일 등의 키와 실제 값이 저장된다
     	Map<String,Object> resultMap = sampleService.selectBoardList(commandMap.getMap());
     	
+    	// commandMap으로 받아온 객체 로그로 표시
+        // Iterator 사용 1 - keySet() -> key, value 전체 출력.
+    	for (Map.Entry<String, Object> entry : commandMap.getMap().entrySet()) {
+    		log.debug("[key]:" + entry.getKey() + ", [value]:" + entry.getValue());
+    	}
+    	
+//    	log.debug(commandMap.getMap().get("keyword"));
+//    	log.debug(commandMap.getMap().get("searchType"));
+    	
+    	// 쿼리를 통해 받아온 데이터를 ModelAndView 객체를 통해 뷰로 전달하여, 표시.
     	mv.addObject("paginationInfo", (PaginationInfo)resultMap.get("paginationInfo"));
     	mv.addObject("list", resultMap.get("result"));
+//    	mv.addObject(commandMap.getMap().get("keyword"));
+//    	mv.addObject(commandMap.getMap().get("searchType"));
+    	
 
 		return mv;
 	}
+	
+//	@RequestMapping(value = "/sample/openSearchBoardList.do")
+//	public ModelAndView openSearchBoardList(CommandMap commandMap) throws Exception {
+//		// 메서드 실행시 boardList.jsp파일이 실행된다.
+//		ModelAndView mv = new ModelAndView("redirect:/sample/openBoardList.do");
+//		log.debug("openBoardList_Map 확인"+commandMap.getMap());
+////		log.debug("openBoardList_Map 확인"+request);
+//		
+//		return mv;
+//	}
+
 
 	@RequestMapping(value = "/sample/openBoardWrite.do")
 	public ModelAndView openBoardWrite(CommandMap commandMap) throws Exception {
