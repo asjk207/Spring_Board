@@ -1,0 +1,5 @@
+INDEX VERSION 1.131
+C:\Users\JiSoo\Spring_Study\CreateBoard\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4064870574.index
+\src\main\java
+C:\Users\JiSoo\Spring_Study\CreateBoard\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2179782412.index
+\src\main\java
