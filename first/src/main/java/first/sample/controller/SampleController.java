@@ -30,7 +30,7 @@ public class SampleController {
 	public ModelAndView openBoardList(CommandMap commandMap) throws Exception {
 		// 메서드 실행시 boardList.jsp파일이 실행된다.
 		ModelAndView mv = new ModelAndView("/sample/boardList");
-		log.debug("openBoardList_Map 확인"+commandMap.getMap());
+//		log.debug("openBoardList_Map 확인"+commandMap.getMap());
 		
 		
 		// 목록을 저장할수 있는 List를 선언 한다.
@@ -41,7 +41,7 @@ public class SampleController {
     	// commandMap으로 받아온 객체 로그로 표시
         // Iterator 사용 1 - keySet() -> key, value 전체 출력.
     	for (Map.Entry<String, Object> entry : commandMap.getMap().entrySet()) {
-    		log.debug("[key]:" + entry.getKey() + ", [value]:" + entry.getValue());
+    		log.debug("CommandMap Request 확인 : "+"[key]:" + entry.getKey() + ", [value]:" + entry.getValue());
     	}
     	
 //    	log.debug(commandMap.getMap().get("keyword"));
@@ -50,11 +50,23 @@ public class SampleController {
     	// 쿼리를 통해 받아온 데이터를 ModelAndView 객체를 통해 뷰로 전달하여, 표시.
     	mv.addObject("paginationInfo", (PaginationInfo)resultMap.get("paginationInfo"));
     	mv.addObject("list", resultMap.get("result"));
-//    	mv.addObject(commandMap.getMap().get("keyword"));
-//    	mv.addObject(commandMap.getMap().get("searchType"));
     	
 
-		return mv;
+//    	log.debug("keyword가 널 값인가요?:  "+commandMap.getMap().get("keyword") != null);
+//    	log.debug("searchType이 널 값인가요?:  "+commandMap.getMap().get("searchType") != null);
+//    	log.debug("keyword:  "+commandMap.getMap().get("keyword"));
+//    	log.debug("searchType:  "+commandMap.getMap().get("searchType"));
+    	
+    	//keyword, searchType null 값 체크.
+    	if(commandMap.getMap().get("keyword") != null && commandMap.getMap().get("searchType") != null) {
+    		// ModelAndView 객체에 "keyword", "searchType"값에 뷰로 부터 받아온 값을 넣어 다시 반환 해준다.
+    		// 검색에 대한 페이징 정보를 유지하기 위함
+	    	mv.addObject("keyword",commandMap.getMap().get("keyword"));
+	    	mv.addObject("searchType",commandMap.getMap().get("searchType"));
+    		mv.setViewName("/sample/boardList");
+    	}
+    	
+    	return mv;
 	}
 	
 //	@RequestMapping(value = "/sample/openSearchBoardList.do")

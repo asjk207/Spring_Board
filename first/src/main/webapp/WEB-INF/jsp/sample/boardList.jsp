@@ -102,12 +102,18 @@
 							});
 				});
 			</script>
+			<!-- 검색어 페이징 유지를 위한 hidden input 태그 -->
+			<input type="hidden" id="searchType" name="searchType" value="${searchType}"> 
+  			<input type="hidden" id="keyword" name="keyword" value="${keyword}">
 		</div>
 
 		<div class="footer_button_list">
+		
 			<input type="button" value="선택삭제" class="btn btn-outline-info"
-				onClick="deleteValue();"> <a href="#this" class="btn"
-				id="write">글쓰기</a>
+				onClick="deleteValue();"> 
+				
+			<a href="#this" class="btn"id="write">글쓰기</a>
+			
 			<c:if test="${not empty paginationInfo}">
 				<ui:pagination paginationInfo="${paginationInfo}" type="text"
 					jsFunction="fn_search" />
@@ -170,6 +176,10 @@
 			var comSubmit = new ComSubmit();
 			comSubmit.setUrl("<c:url value='/sample/openBoardList.do' />");
 			comSubmit.addParam("currentPageNo", pageNo);
+			// input searchType,keyword 항목에 저장된 값을 검색어 페이징을 위해 페이징시 마다 콘트롤러에 값을 실어 보냈다.
+			// 검색시 페이징을 유지하기 위함.
+			comSubmit.addParam("searchType", document.getElementById("searchType").value);
+			comSubmit.addParam("keyword", document.getElementById("keyword").value);
 			comSubmit.submit();
 		}
 		/*
